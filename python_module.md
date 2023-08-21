@@ -1,4 +1,4 @@
-<h1>Combination 모듈</h1>
+<h2>Combination 모듈</h2>
 <code>
 def solution (number) :
     from itertools import combinations
