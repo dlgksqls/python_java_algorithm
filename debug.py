@@ -1,12 +1,7 @@
-def solution(myString, pat):
-    myString = myString.lower()
-    pat = pat.lower()
-    
-    if len(myString) < len(pat):
-        return 0
-    if pat in myString:
-        return 1
-    elif pat not in myString:
-        return 0
-    
-print(solution("AbCdEfG","aBc"))
+s = input()
+
+students_list = []
+for i in range(int(s)):
+    student = input().split()
+    students_list.append([student[0],int(student[1]),int(student[2]),int(student[3])])
+    print(students_list)
