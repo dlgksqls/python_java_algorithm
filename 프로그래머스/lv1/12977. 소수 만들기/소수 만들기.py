@@ -8,9 +8,7 @@ def solution(nums):
             for k in range(j+1,len(nums)):
                 sum = nums[i] + nums[j] + nums[k]
                 result.append(sum)
-    
-    print(result)
-    
+
     for z in result:
         count = 0
         for x in range(2,z):
