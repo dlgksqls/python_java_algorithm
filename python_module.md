@@ -31,5 +31,30 @@ for i in range(T):
 </code>
 
 <h2>루트</h2>
+<code>
 import math
 int(math.sqrt(4)) => 2
+</code>
+소수 구하는데 사용 (프로그래머스 12921)
+<code>
+    import math
+
+def solution(n):
+    answer = 0
+
+    if n >= 2:
+        answer += 1
+        
+    for i in range(3,n+1):
+        count = 0
+        for j in range(2,int(math.sqrt(i)+1)):
+            if i % j == 0:
+                count += 1
+                break
+            
+        if count == 0:        
+          answer += 1
+          count = 0
+
+    return answer
+</code>
