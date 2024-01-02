@@ -37,8 +37,7 @@ int(math.sqrt(4)) => 2
 </code>
 소수 구하는데 사용 (프로그래머스 12921)
 <code>
-    import math
-
+import math
 def solution(n):
     answer = 0
 
