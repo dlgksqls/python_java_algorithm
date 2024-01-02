@@ -29,3 +29,7 @@ for i in range(T):
         a,b = map(int, sys.stdin.readline().split())
         print(a+b)
 </code>
+
+<h2>루트</h2>
+import math
+int(math.sqrt(4)) => 2
