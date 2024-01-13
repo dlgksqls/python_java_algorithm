@@ -18,3 +18,16 @@ for i in range(len(times)):
     time_prv += times[i]
 
 print(answer)
+
+# 효율적 답안
+
+# N = int(input())
+# P = list(map(int, input().split()))
+
+# P.sort()
+
+# answer = 0
+# for i in range(1, N+1):
+#     answer += sum(P[:i])
+
+# print(answer)
