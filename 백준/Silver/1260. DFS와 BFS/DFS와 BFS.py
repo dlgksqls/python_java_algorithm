@@ -1,37 +1,42 @@
 import sys
 from collections import deque
+sys.setrecursionlimit(1000000)
 
-def dfs(graph, start, visited):
-  visited[start] = True
-  print(start, end=' ')
-  for i in range(1, n+1):
-    if graph[start][i] == True and visited[i] == False:
-      dfs(graph, i, visited)
+def dfs(start):
+    visited_dfs[start] = 1
+    print(start, end = ' ')
 
-def bfs(graph, start, visited):
-  queue = deque([start])
-  visited[start] = True
+    for j in graph[start]:
+        if not visited_dfs[j]:
+            dfs(j)
 
-  while queue:
-    v = queue.popleft()
-    print(v, end=' ')
+def bfs(start):
+    queue = deque([start])
+    visited_bfs[start] = 1
 
-    for i in range(1, n+1):
-      if graph[v][i] == True and visited[i] == False:
-        queue.append(i)
-        visited[i] = True
+    while queue:
+        v = queue.popleft()
+        print(v, end=' ')
 
-n,m,v = map(int,input().split())
-graph = [[False]*(n+1) for _ in range(n+1)]
+        for i in graph[v]:
+            if not visited_bfs[i]:
+                queue.append(i)
+                visited_bfs[i] = 1
+
+n, m, v = map(int, sys.stdin.readline().split())
+
+graph = [[] for _ in range(n+1)]
+visited_dfs = [0] * (n+1)
+visited_bfs = [0] * (n+1)
 
 for i in range(m):
-  a,b = map(int, sys.stdin.readline().split())
-  graph[a][b] = True
-  graph[b][a] = True
+    a, b = map(int, sys.stdin.readline().split())
+    graph[a].append(b)
+    graph[b].append(a)
 
-visit_dfs = [False] * (n+1)
-visit_bfs = [False] * (n+1)
+for i in range(n+1):
+    graph[i].sort()
 
-dfs(graph, v, visit_bfs)
+dfs(v)
 print()
-bfs(graph, v, visit_dfs)
+bfs(v)
