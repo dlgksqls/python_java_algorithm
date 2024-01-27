@@ -1,75 +1,38 @@
-# def solution(N, stages):
-#     answer = []
-#     percentage = []
-#     fail_num = []
-#     stages.sort()
-#     start = 0
-#     count_num = 0
+import sys
+sys.setrecursionlimit(10**9)
 
-#     for i in range(0, len(stages)):
-#         if stages[i] > N:
-#             continue
-#         elif stages[start] == stages[i]:
-#             count_num = stages.count(stages[i])
-#             continue
-#         else:
-#             start = i
-#             fail_num.append(count_num)
-#             count_num = stages.count(stages[i])
-#     fail_num.append(count_num)
+        
+#visited = [[-1 for _ in range(n)] for _ in range(m)]
 
-#     length = len(stages)
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]
+ans=False
+def dfs(y,x):
+    global ans
+    
+    if y == m-1:
+        ans = True
+        return True
 
-#     for i in fail_num:
-#         percentage.append(i / length)
-#         length -= i
+    elect[y][x]=2
+    for i in range(4):
+        tx = x + dx[i]
+        ty = y + dy[i]
+        if 0<=ty<m and 0<=tx<n and elect[ty][tx]==0:
+            dfs(ty, tx)
+            
+        
+    
 
-#     percentage_with_index = list(enumerate(percentage, start=1))
-
-#     sorted_stages = sorted(percentage_with_index, key=lambda x: (-x[1], x[0]))
-
-#     answer = [stage_num for stage_num, _ in sorted_stages]
-
-#     return fail_num
-
-
-def solution(N, stages):
-    answer = []
-    percentage = []
-    fail_num = [0] * (N + 1)
-    stages.sort()
-    start = 0
-    count_num = 0
-
-    for i in range(0, len(stages)):
-        if stages[i] > N:
-            continue
-        elif stages[start] == stages[i]:
-            count_num = stages.count(stages[i])
-            continue
-        else:
-            start = i
-            fail_num[stages[i - 1]] = count_num
-            count_num = stages.count(stages[i])
-    fail_num[stages[i - 1]] = count_num
-    length = len(stages)
-
-    for i in fail_num[1:]:
-        if length != 0:
-            percentage.append(i / length)
-            length -= i
-        else:
-            percentage.append(0)
-
-    answer = [
-        stage_num
-        for stage_num, fail_rate in sorted(
-            enumerate(percentage, start=1), key=lambda x: (-x[1], x[0])
-        )
-    ]
-
-    return answer
-
-
-answer = solution(4, [4, 4, 4, 4, 4])
-print(answer)
+m, n = map(int,input().split())
+elect=[]
+for _ in range(m):
+    elect.append(list(map(int,input())))
+for i in range(n):
+    if elect[0][i]==0:
+        dfs(0,i)
+        if ans:
+            print('YES')
+            break
+if not ans:
+    print('NO')
