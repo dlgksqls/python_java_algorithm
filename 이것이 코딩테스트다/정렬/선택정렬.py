@@ -7,4 +7,5 @@ for i in range(len(array)):
             min_num = j
     array[i], array[min_num] = array[min_num], array[i]
 
+array.sort()
 print(array)
