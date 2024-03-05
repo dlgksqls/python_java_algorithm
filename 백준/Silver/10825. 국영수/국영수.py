@@ -1,14 +1,8 @@
-s = int(input())
+n = int(input())
 
-students_list = []
-for i in range(s):
-    student = input().split()
-    students_list.append([student[0],int(student[1]),int(student[2]),int(student[3])])
+data = [list(input().split()) for _ in range(n)]
 
-students_list.sort(key = lambda x:x[0])
-students_list.sort(key = lambda x:x[3], reverse=True)
-students_list.sort(key = lambda x:x[2])
-students_list.sort(key = lambda x:x[1], reverse=True)
+data.sort(key = lambda x: (-int(x[1]), int(x[2]), -int(x[3]), x[0]))
 
-for i in students_list:
+for i in data:
     print(i[0])
