@@ -1,19 +1,16 @@
-n = int(input())
+import sys
 
-if n % 5 == 0: 
-    print(n // 5)
+dp = [5000 for _ in range(5001)]
+
+dp[3] = 1
+dp[5] = 1
+n = int(sys.stdin.readline())
+
+for i in range(6, n+1):
+    if dp[i-3] != 5000 or dp[i-5] != 5000:
+        dp[i] = min(dp[i-3], dp[i-5]) + 1
+
+if dp[n] == 5000:
+    print(-1)
 else:
-    p = 0
-    while n > 0:
-        n -= 3
-        p += 1
-        if n % 5 == 0:  
-            p += n // 5
-            print(p)
-            break
-        elif n == 1 or n == 2: 
-            print(-1)
-            break
-        elif n == 0: 
-            print(p)
-            break
+    print(dp[n])
