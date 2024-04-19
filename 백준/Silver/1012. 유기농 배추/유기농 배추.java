@@ -1,23 +1,31 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 public class Main {
     static int graph[][];
     static int t, m, n, k;
-    static int answer;
-    static int answers[];
+    static Queue<int[]> queue;
+    static int dx[] = {-1, 0, 1, 0};
+    static int dy[] = {0, 1, 0, -1};
 
-    public static void dfs(int y, int x){
-        graph[y][x] = 0;
-        int dx[] = {1, 0, -1, 0};
-        int dy[] = {0, 1, 0, -1};
+    public static void bfs(int x, int y){
+        queue = new LinkedList<>();
 
-        for (int i=0; i<4; i++){
-            int nx = dx[i] + x;
-            int ny = dy[i] + y;
+        queue.offer(new int[] {x, y});
 
-            if (nx >= 0 && nx < m && ny >= 0 && ny < n)
-                if (graph[ny][nx] == 1){
-                    dfs(ny,nx);
+        graph[x][y] = 0;
+
+        while (!queue.isEmpty()) {
+            int poll[] = queue.poll();
+            for (int i = 0; i < 4; i++) {
+                int nx = dx[i] + poll[0];
+                int ny = dy[i] + poll[1];
+
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
+                    if (graph[nx][ny] == 1) {
+                        queue.offer(new int[] {nx, ny});
+                        graph[nx][ny] = 0;
+                    }
+                }
             }
         }
     }
@@ -26,9 +34,9 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         t = Integer.parseInt(br.readLine());
-        answers = new int[t];
+
         for (int i=0; i<t; i++){
-            answer = 0;
+            int answer = 0;
             StringTokenizer st = new StringTokenizer(br.readLine());
             m = Integer.parseInt(st.nextToken());
             n = Integer.parseInt(st.nextToken());
@@ -43,21 +51,16 @@ public class Main {
                 graph[y][x] = 1;
             }
 
-            for (int j=0; j<n; j++) {
-                for (int l=0; l<m; l++){
-                    if (graph[j][l] == 1){
-                        answer++;
-                        dfs(j ,l);
+            for (int j=0; j<n; j++){
+                for (int k=0; k<m; k++){
+                    if (graph[j][k] == 1){
+                        answer ++;
+                        bfs(j, k);
                     }
                 }
             }
-            answers[i] = answer;
-        }
-
-        for (int answer : answers) {
             System.out.println(answer);
         }
-
         br.close();
         bw.close();
     }
