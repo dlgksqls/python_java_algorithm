@@ -28,11 +28,7 @@ public class Main {
         int pre = 0;
 
         for (int i=0; i<n; i++){
-            if (i==0){
-                pre = input[i][1];
-                answer ++;
-            }
-            else if (pre <= input[i][0]){
+            if (pre <= input[i][0]){
                 pre = input[i][1];
                 answer ++;
             }
