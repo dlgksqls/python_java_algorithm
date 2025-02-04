@@ -20,28 +20,31 @@ public class Main {
      * 참고 https://velog.io/@isohyeon/Java-%EB%B0%B1%EC%A4%80-10986-%EB%82%98%EB%A8%B8%EC%A7%80-%ED%95%A9
      */
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
         long result = 0;
-        long[] sum = new long[n + 1];
+
+        long[] sum = new long[n+1];
         long[] count = new long[m];
 
         st = new StringTokenizer(br.readLine());
         for (int i = 1; i < n + 1; i++) {
-            sum[i] = (sum[i - 1] + Integer.parseInt(st.nextToken())) % m;
+            sum[i] = (sum[i-1] + Integer.parseInt(st.nextToken())) % m;
+
             if(sum[i] == 0) {
                 result++;
             }
-            count[(int) sum[i]]++;
+            count[(int)sum[i]]++;
         }
 
-        for(int i=0; i<m; i++) {
-            if(count[i] > 1) {
-                result += (count[i]* (count[i]-1) / 2);
+        for (int i=0; i<m; i++){
+            if (count[i] > 1){
+                result += (count[i] * (count[i] - 1) / 2);
             }
         }
         System.out.println(result);
