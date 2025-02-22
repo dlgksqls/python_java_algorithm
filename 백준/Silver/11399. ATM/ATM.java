@@ -1,30 +1,30 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 public class Main {
-    public static void main(String[] args) throws Exception{
+
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int n = Integer.parseInt(br.readLine());
-        int[] times = new int[n];
+        int[] array = new int[n];
 
-        String[] inputs = br.readLine().split(" ");
-        for (int i = 0; i < n; i++) {
-            times[i] = Integer.parseInt(inputs[i]);
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i=0; i<n; i++){
+            array[i] = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(times);
+        Arrays.sort(array);
 
         int sum = 0;
-        int total = 0;
-        for (int time : times) {
-            sum += time;
-            total += sum;
+        int answer = 0;
+        for (int i=0; i<n; i++){
+            sum += array[i];
+            answer += sum;
         }
-
-        bw.write(String.valueOf(total));
-
-        br.close();
-        bw.close();
+        System.out.println(answer);
     }
 }
