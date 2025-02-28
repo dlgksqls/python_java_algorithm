@@ -25,13 +25,12 @@ public class Main {
             if (k == 0){
                 break;
             }
-            while (true){
-                if (k < array[i]){
-                    break;
-                }
-                k -= array[i];
-                answer++;
+            if (array[i] > k){
+                continue;
             }
+
+            answer += k/array[i];
+            k %= array[i];
         }
         System.out.println(answer);
     }
