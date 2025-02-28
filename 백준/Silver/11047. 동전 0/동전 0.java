@@ -1,44 +1,38 @@
-import java.util.*;
-import java.io.*;
-public class Main {
-    static int n, k;
-    static int answer;
-    static Integer inputs[];
-    static int input;
-    public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
+public class Main {
+    static int n;
+    static int k;
+    static int[] array;
+    static int answer = 0;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
-
-        inputs = new Integer[n];
+        array = new int[n];
 
         for (int i=0; i<n; i++){
-            input = Integer.parseInt(br.readLine());
-            inputs[i] = input;
+            array[i] = Integer.parseInt(br.readLine());
         }
 
-        Arrays.sort(inputs, Collections.reverseOrder());
-
-        for (int num : inputs) {
-            if (num == 0){
+        for (int i=n-1; i>=0; i--){
+            if (k == 0){
                 break;
             }
-            else {
-                while (true){
-                    if (k >= num){
-                        k -= num;
-                        answer ++;
-                    }
-                    else
-                        break;
+            while (true){
+                if (k < array[i]){
+                    break;
                 }
+                k -= array[i];
+                answer++;
             }
         }
-        bw.write(String.valueOf(answer));
-        br.close();
-        bw.close();
+        System.out.println(answer);
     }
 }
