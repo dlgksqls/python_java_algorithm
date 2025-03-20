@@ -2,73 +2,68 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static Integer input[] = new Integer[14];
 
-    static int Jun(int money, Integer[] input) {
-        int answer = 0;
-
-        for (int i : input) {
-            if (money >= i) {
-                int buy = money / i;
-                answer += buy;
-                money -= i * buy;
-            }
-        }
-
-        return answer * input[13] + money;
-    }
-
-    static int Seong(int money, Integer[] input){
-        int answer = 0;
-        int buffer = input[0];
-        int upCount = 0;
-        int downCount = 0;
-
-        for (int i = 1; i < 14; i++){
-            int today = input[i];
-
-            if (today < buffer) {
-                downCount++;
-                upCount = 0;
-            } else if (today > buffer) {
-                upCount++;
-                downCount = 0;
-            } else {
-                upCount = 0;
-                downCount = 0;
-            }
-
-            buffer = today;
-
-            if (downCount == 3) {
-                int buy = money / today;
-                answer += buy;
-                money -= buy * today;
-                downCount = 0;
-            } else if (upCount == 3) {
-                money += answer * today;
-                answer = 0;
-                upCount = 0;
-            }
-        }
-        return money + answer * input[13];
-    }
-    public static void main(String[] args) throws Exception{
+    static int money;
+    static int count_seong;
+    static int count_jun;
+    static int[] array = new int[14];
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int money = Integer.parseInt(br.readLine());
+        money = Integer.parseInt(br.readLine());
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         for (int i=0; i<14; i++){
-            input[i] = Integer.parseInt(st.nextToken());
+            array[i] = Integer.parseInt(st.nextToken());
         }
 
-        if (Jun(money, input) > Seong(money, input))
-            System.out.println("BNP");
-        else if (Jun(money, input) < Seong(money, input))
-            System.out.println("TIMING");
-        else
-            System.out.println("SAMESAME");
+        int jun_money = money;
+        int seong_money = money;
+
+        jun(jun_money, 0);
+        seong(seong_money, 0);
+
+        if (count_jun > count_seong) System.out.println("BNP");
+        else if (count_jun < count_seong) System.out.println("TIMING");
+        else System.out.println("SAMESAME");
+    }
+
+    private static void jun(int jun_money, int count) {
+        for (int i=0; i<14; i++){
+            if (jun_money >= array[i]) {
+                count += jun_money / array[i];
+                jun_money -= array[i] * (jun_money / array[i]);
+            }
+        }
+        count_jun = jun_money + (array[13] * count);
+    }
+
+    private static void seong(int seong_money, int count) {
+        int count_high = 0;
+        int count_low = 0;
+        int recent = array[0];
+
+        for (int i=1; i<14; i++){
+            if (recent > array[i]){
+                count_high = 0;
+                count_low ++;
+            }
+            else if (recent < array[i]){
+                count_high ++;
+                count_low = 0;
+            }
+
+            if (count_low >= 3){
+                count += seong_money / array[i];
+                seong_money -= array[i] * (seong_money / array[i]);
+            }
+            else if(count_high >= 3){
+                seong_money += count * array[i];
+                count = 0;
+            }
+            recent = array[i];
+        }
+
+        count_seong = seong_money + (array[13] * count);
     }
 }
