@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
 
@@ -17,6 +14,7 @@ public class Main {
         HashMap<String, Integer> map = new HashMap<>();
 
         array = new String[n];
+        ArrayList<String> files = new ArrayList<>();
 
         for (int i=0; i<n; i++){
             array[i] = br.readLine();
@@ -28,13 +26,18 @@ public class Main {
 
             if (map.get(key) == null) {
                 map.put(key, 1);
+                files.add(key);
             } else {
                 map.put(key, map.get(key) + 1);
             }
         }
 
-        map.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> System.out.println(entry.getKey() + " " + entry.getValue()));
+        Collections.sort(files);
+
+        for (String file : files) {
+            System.out.println(file + " " + map.get(file));
+        }
+
+        br.close();
     }
 }
