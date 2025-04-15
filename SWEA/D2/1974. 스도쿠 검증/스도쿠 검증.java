@@ -39,48 +39,64 @@ class Solution
         int T = sc.nextInt();
 
         for(int tc = 1; tc <= T; tc++) {
-            int[][] board = new int[9][9];
+            int[][] array = new int[9][9];
 
-            for(int i = 0; i < 9; i++) {
-                for(int j = 0; j < 9; j++) {
-                    board[i][j] = sc.nextInt();
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    array[i][j] = sc.nextInt();
                 }
             }
 
-            int answer = 1;
+            boolean flag = true;
 
-            // 1. 행 체크
-            for(int i = 0; i < 9; i++) {
-                Set<Integer> set = new HashSet<>();
-                for(int j = 0; j < 9; j++) {
-                    set.add(board[i][j]);
+            for(int i=0; i<9; i++){
+                if (flag) {
+                    boolean[] check = new boolean[10];
+                    for (int j = 0; j < 9; j++) {
+                        if (!check[array[i][j]]) {
+                            check[array[i][j]] = true;
+                            continue;
+                        }
+                        flag = false;
+                        break;
+                    }
                 }
-                if(set.size() != 9) answer = 0;
+            }
+            for(int i=0; i<9; i++){
+                if (flag) {
+                    boolean[] check = new boolean[10];
+                    for (int j = 0; j < 9; j++) {
+                        if (!check[array[j][i]]) {
+                            check[array[j][i]] = true;
+                            continue;
+                        }
+                        flag = false;
+                        break;
+                    }
+                }
             }
 
-            // 2. 열 체크
-            for(int j = 0; j < 9; j++) {
-                Set<Integer> set = new HashSet<>();
-                for(int i = 0; i < 9; i++) {
-                    set.add(board[i][j]);
-                }
-                if(set.size() != 9) answer = 0;
-            }
-
-            // 3. 3x3 박스 체크
-            for(int r = 0; r < 9; r += 3) {
-                for(int c = 0; c < 9; c += 3) {
-                    Set<Integer> set = new HashSet<>();
-                    for(int i = r; i < r + 3; i++) {
-                        for(int j = c; j < c + 3; j++) {
-                            set.add(board[i][j]);
+            for(int i=0; i<9; i+=3){
+                for(int j=0; j<9; j+=3){
+                    if (flag){
+                        boolean[] check = new boolean[10];
+                        for(int k=0; k<3; k++){
+                            for(int l=0; l<3; l++){
+                                if (!check[array[i+k][j+l]]){
+                                    check[array[i+k][j+l]] = true;
+                                    continue;
+                                }
+                                flag = false;
+                                break;
+                            }
                         }
                     }
-                    if(set.size() != 9) answer = 0;
                 }
             }
-
-            System.out.println("#" + tc + " " + answer);
+            if (flag) {
+                System.out.println("#" + tc + " " + 1);
+            }
+            else System.out.println("#" + tc + " " + 0);
         }
     }
 }
