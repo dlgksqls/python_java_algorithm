@@ -1,47 +1,58 @@
-import java.util.*;
-import java.io.*;
-public class Main {
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
-    static int n;
-    static int m;
+public class Main {
     static ArrayList<Integer>[] graph;
-    static int[] visited;
-    static int count = 0;
-    public static void main(String[] args) throws IOException {
+    static boolean visited[];
+    static int n, m;
+    static int answer = 0;
+    static Queue<Integer> queue;
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         n = Integer.parseInt(br.readLine());
         m = Integer.parseInt(br.readLine());
 
         graph = new ArrayList[n+1];
-        visited = new int[n+1];
-
-        for (int i=1; i<=n; i++){
+        visited = new boolean[n+1];
+        for(int i=1; i<=n; i++){
             graph[i] = new ArrayList<>();
         }
 
         for (int i=0; i<m; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
 
-            graph[a].add(b);
-            graph[b].add(a);
+            graph[x].add(y);
+            graph[y].add(x);
         }
 
-        dfs(1);
+        bfs(1);
+        System.out.println(answer);
 
-        System.out.println(count);
         br.close();
     }
 
-    private static void dfs(int v) {
-        visited[v] = 1;
+    private static void bfs(int node) {
+        queue = new LinkedList<>();
+        queue.offer(node);
+        visited[node] = true;
 
-        for (int i : graph[v]) {
-            if (visited[i] != 1){
-                count++;
-                dfs(i);
+        while (!queue.isEmpty()){
+            int v = queue.poll();
+            for (Integer i: graph[v]) {
+                if (!visited[i]){
+                    visited[i] = true;
+                    answer ++;
+                    queue.offer(i);
+                }
             }
         }
     }
