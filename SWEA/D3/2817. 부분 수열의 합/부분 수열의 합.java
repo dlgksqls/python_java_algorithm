@@ -36,6 +36,10 @@ public class Solution {
         if (depth == array.length){
             return;
         }
+        
+        if (sum > k) {
+            return;
+        }
 
         // 선택하거나
         recursion(sum + array[depth], depth + 1);
