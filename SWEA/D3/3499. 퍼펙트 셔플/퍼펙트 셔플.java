@@ -26,7 +26,7 @@ public class Solution {
                 end ++;
             }
 
-            if (end % 2 != 0)
+            if (n % 2 != 0)
                 answer[n-1] = array[start];
 
             System.out.print("#" + tc + " ");
