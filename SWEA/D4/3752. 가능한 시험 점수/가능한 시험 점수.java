@@ -1,54 +1,43 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 
 public class Solution {
 
-    static int n;
-    static HashSet<Integer> answer;
-    static int[] array;
-    static boolean[][] dp;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-
         int T = Integer.parseInt(br.readLine());
 
-        for(int tc = 1; tc <= T; tc ++){
-            n = Integer.parseInt(br.readLine());
-            array = new int[n];
-            answer = new HashSet<>();
+        for (int tc = 1; tc <= T; tc++) {
+            int n = Integer.parseInt(br.readLine());
+            int[] scores = new int[n];
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
-            st = new StringTokenizer(br.readLine());
-            int sum = 0;
-            for(int i=0; i<n; i++){
-                array[i] = Integer.parseInt(st.nextToken());
-                sum += array[i];
+            int maxSum = 0;
+            for (int i = 0; i < n; i++) {
+                scores[i] = Integer.parseInt(st.nextToken());
+                maxSum += scores[i];
             }
 
-            dp = new boolean[n + 1][sum + 1];
+            boolean[] dp = new boolean[maxSum + 1];
+            dp[0] = true;  // 부분합 0은 항상 만들 수 있음
 
-            recursion(0, 0);
+            for (int score : scores) {
+                // 뒤에서부터 반복하는 이유: 중복 방지 (같은 점수를 두 번 쓰는 것 방지)
+                for (int i = maxSum; i >= 0; i--) {
+                    if (dp[i]) {
+                        dp[i + score] = true;
+                    }
+                }
+            }
 
-            System.out.println("#" + tc + " " + answer.size());
+            int count = 0;
+            for (boolean possible : dp) {
+                if (possible) count++;
+            }
+
+            System.out.println("#" + tc + " " + count);
         }
-        br.close();
-    }
-
-    private static void recursion(int idx, int sum) {
-        if (dp[idx][sum]) return;  // 이미 방문한 상태
-        dp[idx][sum] = true;
-
-        if (idx == n){
-            answer.add(sum);
-            return;
-        }
-
-        recursion(idx + 1, sum + array[idx]);
-
-        recursion(idx + 1, sum);
     }
 }
