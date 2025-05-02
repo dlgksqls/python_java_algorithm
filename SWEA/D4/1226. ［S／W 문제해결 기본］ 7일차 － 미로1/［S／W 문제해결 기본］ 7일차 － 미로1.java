@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Solution {
@@ -10,7 +12,6 @@ public class Solution {
     static int[] dy = {1, 0, -1, 0};
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
 
         for (int tc = 1; tc <= 10; tc++) {
             br.readLine();
@@ -30,7 +31,7 @@ public class Solution {
                 }
             }
 
-            if (dfs(x, y))
+            if (bfs(x, y))
                 System.out.println("#" + tc + " " + 1);
             else System.out.println("#" + tc + " " + 0);
 
@@ -38,19 +39,24 @@ public class Solution {
         br.close();
     }
 
-    private static boolean dfs(int x, int y) {
-        if (graph[x][y] == 3)
-            return true;
-
+    private static boolean bfs(int x, int y) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] {x, y});
         graph[x][y] = 1;
 
-        for(int i=0; i<4; i++){
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+        while (!queue.isEmpty()){
+            int[] poll = queue.poll();
 
-            if (nx >= 0 && nx < 16 && ny >= 0 && ny < 16){
-                if (graph[nx][ny] == 0 || graph[nx][ny] == 3){
-                    if (dfs(nx, ny)) return true;
+            for(int i=0; i<4; i++){
+                int nx = poll[0] + dx[i];
+                int ny = poll[1] + dy[i];
+
+                if (nx >= 0 && nx < 16 && ny >= 0 && ny < 16){
+                    if (graph[nx][ny] == 3) return true;
+                    else if (graph[nx][ny] == 0){
+                        queue.add(new int[]{nx, ny});
+                        graph[nx][ny] = 1;
+                    }
                 }
             }
         }
