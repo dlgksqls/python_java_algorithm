@@ -8,6 +8,7 @@ public class Solution {
     static int n, m;
     static ArrayList<Integer>[] graph;
     static boolean[] visited;
+    static PriorityQueue<Integer> answer;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -19,6 +20,7 @@ public class Solution {
 
             graph = new ArrayList[101];
             visited = new boolean[101];
+            answer = new PriorityQueue<>(Collections.reverseOrder());
 
             for(int i=1; i<=100; i++){
                 graph[i] = new ArrayList<>();
@@ -29,23 +31,22 @@ public class Solution {
                 graph[Integer.parseInt(st.nextToken())].add(Integer.parseInt(st.nextToken()));
             }
 
-            int answer = bfs(m);
-            System.out.println("#" + tc + " " + answer);
+            bfs(m);
+
+            System.out.println("#" + tc + " " + answer.poll());
         }
 
         br.close();
     }
 
-    private static int bfs(int start) {
+    private static void bfs(int start) {
         Queue<Integer> queue = new LinkedList<>();
         visited[start] = true;
         queue.add(start);
 
-        int max = start;
-
         while (!queue.isEmpty()) {
             PriorityQueue<Integer> nodes = new PriorityQueue<>(Collections.reverseOrder());
-            int size = queue.size();
+            int size = queue.size(); // 큐의 크기가 바뀌므로 고정시켜야함
 
             for (int i = 0; i < size; i++) {
                 int now = queue.poll();
@@ -59,9 +60,7 @@ public class Solution {
                 }
             }
 
-            max = nodes.poll();
+            answer = nodes;
         }
-
-        return max;
     }
 }
