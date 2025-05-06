@@ -7,6 +7,7 @@ public class Solution {
     static int answer;
     static int n;
     static int[] array;
+    static int[] per;
     static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
@@ -19,6 +20,7 @@ public class Solution {
             n = Integer.parseInt(br.readLine());
             array = new int[n];
             visited = new boolean[n];
+            per = new int[n];
 
             st = new StringTokenizer(br.readLine());
             for(int i = 0; i < n; i++) {
@@ -26,35 +28,42 @@ public class Solution {
             }
 
             answer = 0;
-            recursion(0, 0, 0);
+
+            combination(0);
 
             System.out.println("#" + tc + " " + answer);
         }
         br.close();
     }
 
-    private static void recursion(int idx, int left, int right) {
-        if (idx == n) {
-            if (left >= right) {
-                answer++;
-            }
+    private static void combination(int depth) {
+        if (depth == n){
+            recursion(0, 0, 0);
             return;
         }
 
-        for (int i = 0; i < n; i++) {
-            if (!visited[i]) {
+        for(int i=0; i<n; i++){
+            if (!visited[i]){
                 visited[i] = true;
-
-                // 현재 추를 왼쪽에 놓는 경우
-                recursion(idx + 1, left + array[i], right);
-
-                // 현재 추를 오른쪽에 놓는 경우 (왼쪽 무게가 오른쪽보다 커야 함)
-                if (left >= right + array[i]) {
-                    recursion(idx + 1, left, right + array[i]);
-                }
-
+                per[depth] = array[i];
+                combination(depth + 1);
                 visited[i] = false;
             }
         }
+    }
+
+    private static void recursion(int idx, int left, int right) {
+        if (left < right) {
+            return;
+        }
+
+        if (idx == n){
+            answer ++;
+            return;
+        }
+
+        recursion(idx + 1, left + per[idx], right);
+
+        recursion(idx + 1, left, right + per[idx]);
     }
 }
