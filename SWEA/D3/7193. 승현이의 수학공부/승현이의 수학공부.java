@@ -16,8 +16,7 @@ public class Solution {
             
             long sum = 0;
             for(char c : x) {
-                int digit = Character.getNumericValue(c);
-                sum += digit;
+                sum += c - '0';
             }
             
             System.out.println("#" + tc + " " + sum % (n - 1));
