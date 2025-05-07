@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Solution {
@@ -31,13 +33,34 @@ public class Solution {
 
             flag = false;
             visited = new boolean[100];
-            dfs(0);
+//            dfs(0);
+            bfs(0);
 
             if (flag) System.out.println("#" + tc + " " + 1);
             else System.out.println("#" + tc + " " + 0);
         }
 
         br.close();
+    }
+
+    private static void bfs(int v) {
+        Queue<Integer> queue = new LinkedList<>();
+        visited[v] = true;
+        queue.add(v);
+
+        while(!queue.isEmpty()){
+            Integer now = queue.poll();
+
+            for (Integer i : graph[now]) {
+                if (i == 99){
+                    flag = true;
+                    return;
+                }
+                if (!visited[i]){
+                    queue.add(i);
+                }
+            }
+        }
     }
 
     private static void dfs(int v) {
