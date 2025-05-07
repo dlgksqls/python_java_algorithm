@@ -1,72 +1,64 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Solution {
+    static int N;
+    static ArrayList<Integer>[] taller;
+    static ArrayList<Integer>[] shorter;
 
-    static int n;
-    static int[][] graph;
-    static boolean[] visited;
-    static int rCount;
-    static int hCount;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
         int T = Integer.parseInt(br.readLine());
-        for(int tc = 1; tc <= T; tc ++){
-            n = Integer.parseInt(br.readLine());
-            int m = Integer.parseInt(br.readLine());
+        for(int tc = 1; tc <= T; tc++) {
+            N = Integer.parseInt(br.readLine());
+            int M = Integer.parseInt(br.readLine());
 
-            graph = new int[n+1][n+1];
+            taller = new ArrayList[N+1];
+            shorter = new ArrayList[N+1];
 
+            for(int i = 1; i <= N; i++) {
+                taller[i] = new ArrayList<>();
+                shorter[i] = new ArrayList<>();
+            }
 
-            for(int i=0; i<m; i++){
+            for(int i = 0; i < M; i++) {
                 st = new StringTokenizer(br.readLine());
                 int a = Integer.parseInt(st.nextToken());
                 int b = Integer.parseInt(st.nextToken());
 
-                graph[a][b] = 1;
+                taller[a].add(b);   // a보다 큰 학생 b
+                shorter[b].add(a);  // b보다 작은 학생 a
             }
 
             int answer = 0;
+            for(int i = 1; i <= N; i++) {
+                boolean[] visited = new boolean[N+1];
+                int tallCount = dfs(i, taller, visited);
 
-            for(int i=1; i<=n; i++){
-                rCount = 0;
-                hCount = 0;
-                visited = new boolean[n+1];
-                rdfs(i);
-                visited = new boolean[n+1];
-                hdfs(i);
+                visited = new boolean[N+1];
+                int shortCount = dfs(i, shorter, visited);
 
-                if (rCount + hCount == n-1) answer ++;
+                if (tallCount + shortCount == N - 1) {
+                    answer++;
+                }
             }
 
             System.out.println("#" + tc + " " + answer);
         }
-        br.close();
     }
 
-    private static void hdfs(int idx) {
-        visited[idx] = true;
+    private static int dfs(int cur, ArrayList<Integer>[] graph, boolean[] visited) {
+        visited[cur] = true;
+        int count = 0;
 
-        for(int i=1; i<=n; i++){
-            if (!visited[i] && graph[idx][i] == 1) {
-                rCount++;
-                hdfs(i);
+        for (int next : graph[cur]) {
+            if (!visited[next]) {
+                count += 1 + dfs(next, graph, visited);
             }
         }
-    }
 
-    private static void rdfs(int idx) {
-        visited[idx] = true;
-
-        for(int i=1; i<=n; i++){
-            if (!visited[i] && graph[i][idx] == 1) {
-                rCount++;
-                rdfs(i);
-            }
-        }
+        return count;
     }
 }
