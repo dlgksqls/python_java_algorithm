@@ -3,21 +3,21 @@ import java.util.*;
 class Solution {
     public int solution(int k, int[] tangerine) {
         int answer = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
         
-        Arrays.sort(tangerine);
-        int[] array = new int[tangerine[tangerine.length-1]];
-        
-        for(int i=0; i<tangerine.length; i++){
-            array[tangerine[i] - 1] ++;
+        for(int i : tangerine){
+            map.put(i, map.getOrDefault(i, 0) + 1);
         }
         
-        Arrays.sort(array);
+        List<Integer> list = new ArrayList<>(map.keySet());
+        list.sort((o1, o2) -> map.get(o2)-map.get(o1));
         
-        int count = array.length - 1;
-        while(k > 0){
-            k = k - array[count];
-            answer++;
-            count--;
+        for(int i : list){
+            if (k <= 0) break;
+            else {
+                k -= map.get(i);
+                answer ++;
+            }
         }
         
         return answer;
