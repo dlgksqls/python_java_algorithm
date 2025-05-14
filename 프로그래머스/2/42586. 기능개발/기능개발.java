@@ -1,27 +1,29 @@
 import java.util.*;
 
 class Solution {
-    public ArrayList solution(int[] progresses, int[] speeds) {
-        ArrayList<Integer> answer = new ArrayList<>();
-        Stack<Integer> stack = new Stack<>();
-        int count = 0;
+    public int[] solution(int[] progresses, int[] speeds) {
+        int[] answer = {};
+        List<Integer> list = new ArrayList<>();
+        int day = 0;
         
-        while(count <= progresses.length){
-            for(int i=0; i<progresses.length; i++){
-                progresses[i] += speeds[i]; 
-                if (progresses[i] >= 100){
-                    stack.push(i);
+        int count = 0;
+        while(count < speeds.length){
+            for(int i=0; i<speeds.length; i++){
+                if (progresses[i] < 100){
+                    progresses[i] += speeds[i];
                 }
+            }    
+            int add_count = 0;
+            while(day < speeds.length && progresses[day] >= 100){
+                day ++;
+                add_count ++;
+                count ++;
             }
-            
-            int pop_count = 0;
-            while(!stack.isEmpty()){
-                stack.pop();
-                pop_count ++;
+            if (add_count != 0){
+                list.add(add_count);
             }
-            answer.add(pop_count);
-            count += pop_count;
         }
+        answer = list.stream().mapToInt(Integer::intValue).toArray();
         return answer;
     }
 }
