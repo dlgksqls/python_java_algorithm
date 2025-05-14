@@ -1,26 +1,26 @@
 import java.util.*;
 
 class Solution {
-    public ArrayList<Integer> solution(int[] progresses, int[] speeds) {
+    public ArrayList solution(int[] progresses, int[] speeds) {
         ArrayList<Integer> answer = new ArrayList<>();
-        Queue<Integer> queue = new LinkedList<>();
+        Stack<Integer> stack = new Stack<>();
+        int count = 0;
         
-        for(int i=0; i<speeds.length; i++){
-            int remain = 100 - progresses[i];
-            int day = (int) Math.ceil((double) remain / speeds[i]);
-            queue.add(day);
-        }
-        
-        while(!queue.isEmpty()){
-            int current = queue.poll();
-            int count = 1;
-            
-            while(!queue.isEmpty() && current >= queue.peek()){
-                queue.poll();
-                count ++;
+        while(count <= progresses.length){
+            for(int i=0; i<progresses.length; i++){
+                progresses[i] += speeds[i]; 
+                if (progresses[i] >= 100){
+                    stack.push(i);
+                }
             }
             
-            answer.add(count);
+            int pop_count = 0;
+            while(!stack.isEmpty()){
+                stack.pop();
+                pop_count ++;
+            }
+            answer.add(pop_count);
+            count += pop_count;
         }
         return answer;
     }
