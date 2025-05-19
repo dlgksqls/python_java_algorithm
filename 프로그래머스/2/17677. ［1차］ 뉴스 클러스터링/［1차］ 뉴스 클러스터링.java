@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.regex.*;
 
 class Solution {
     public int solution(String str1, String str2) {
@@ -9,7 +8,7 @@ class Solution {
         
         for(int i=0; i<str1.length()-1; i++){
             String word = str1.substring(i, i+2);
-            if (Pattern.matches("^[a-zA-Z]*$", word)){
+            if (word.matches("^[a-zA-Z]*$")){
                 String upper = word.toUpperCase();
                 list1.add(upper);
             }
@@ -17,7 +16,7 @@ class Solution {
         
         for(int i=0; i<str2.length()-1; i++){
             String word = str2.substring(i, i+2);
-            if (Pattern.matches("^[a-zA-Z]*$", word)){
+            if (word.matches("^[a-zA-Z]*$")){
                 String upper = word.toUpperCase();
                 list2.add(upper);
             }
