@@ -1,9 +1,7 @@
 class Solution {
-    static boolean[] visited;
     static int answer = 0;
     public int solution(int[] numbers, int target) {
-        
-        visited = new boolean[numbers.length];
+     
         recursion(0, 0, numbers, target);
         return answer;
     }
