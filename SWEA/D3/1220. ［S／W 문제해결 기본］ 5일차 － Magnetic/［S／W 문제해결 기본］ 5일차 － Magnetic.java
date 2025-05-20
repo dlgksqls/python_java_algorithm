@@ -20,10 +20,12 @@ public class Solution {
             for(int i=0; i<100; i++){
                 boolean flag = false;
                 for(int j=0; j<100; j++){
-                    if (graph[j][i] == 1) flag = true;
+                    if (graph[j][i] == 1){
+                        flag = true;
+                    }
                     if (flag && graph[j][i] == 2) {
-                        answer++;
                         flag = false;
+                        answer ++;
                     }
                 }
             }
