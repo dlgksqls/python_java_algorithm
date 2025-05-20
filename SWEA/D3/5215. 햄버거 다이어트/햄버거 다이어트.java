@@ -1,48 +1,50 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Solution {
 
-    static int n, l;
-    static ArrayList<Ingre> array;
-    static int[][] dp;
+    static class ingredient{
+        int score;
+        int cal;
 
+        public ingredient(int score, int cal) {
+            this.score = score;
+            this.cal = cal;
+        }
+    }
+    static int answer;
     public static void main(String args[]) throws Exception {
         Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt();
+        int T;
+        T = sc.nextInt();
 
-        for(int tc = 1; tc <= T; tc++) {
-            n = sc.nextInt();
-            l = sc.nextInt();
+        for (int tc = 1; tc <= T; tc++) {
+            int n = sc.nextInt();
+            int l = sc.nextInt();
 
-            array = new ArrayList<>();
-            dp = new int[n + 1][l + 1];
-
-            for(int i = 0; i < n; i++) {
-                array.add(new Ingre(sc.nextInt(), sc.nextInt()));
+            ingredient[] array = new ingredient[n];
+            for(int i=0; i<n; i++){
+                array[i] = new ingredient(sc.nextInt(), sc.nextInt());
             }
 
-            for(int i = 1; i <= n; i++) {
-                for(int j = 0; j <= l; j++) {
-                    Ingre cur = array.get(i - 1);
-                    if (cur.kal > j) {
-                        dp[i][j] = dp[i - 1][j];
-                    } else {
-                        dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - cur.kal] + cur.score);
-                    }
-                }
-            }
+            answer = Integer.MIN_VALUE;
+            recursion(0, 0, 0, l, array);
 
-            System.out.println("#" + tc + " " + dp[n][l]);
+            System.out.println("#" + tc + " " + answer);
         }
     }
 
-    private static class Ingre {
-        int score, kal;
-
-        public Ingre(int score, int kal) {
-            this.score = score;
-            this.kal = kal;
+    private static void recursion(int idx, int score, int cal, int limit, ingredient[] array) {
+        if (idx == array.length){
+            if (cal <= limit){
+                answer = Math.max(answer, score);
+            }
+            return;
         }
+
+        if (cal < limit) {
+            recursion(idx + 1, score + array[idx].score, cal + array[idx].cal, limit, array);
+        }
+
+        recursion(idx + 1, score, cal, limit, array);
     }
 }
