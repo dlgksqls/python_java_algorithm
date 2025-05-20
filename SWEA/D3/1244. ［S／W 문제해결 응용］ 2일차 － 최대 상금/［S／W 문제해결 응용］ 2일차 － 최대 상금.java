@@ -1,49 +1,52 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Solution {
 
     static int max;
-    static char[] ch_input;
+    static char[] input;
     static HashSet<String> visited;
     public static void main(String args[]) throws Exception {
-        Scanner sc = new Scanner(System.in);
-        int T;
-        T=sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
 
-        for(int tc = 1; tc <= T; tc++) {
-            ch_input = sc.next().toCharArray();
-            int win = sc.nextInt();
-            max = 0;
+        for(int tc = 1; tc <= T; tc ++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            input = st.nextToken().toCharArray();
+            int n = Integer.parseInt(st.nextToken());
             visited = new HashSet<>();
+            max = Integer.MIN_VALUE;
 
-            dfs(win, 0);
+            recursion(0, n);
 
             System.out.println("#" + tc + " " + max);
         }
     }
 
-    private static void dfs(int win, int depth) {
-        if (depth == win){
-            max = Math.max(max, Integer.parseInt(new String(ch_input)));
+    private static void recursion(int idx, int n) {
+
+        if (idx == n){
+            max = Math.max(max, Integer.parseInt(new String(input)));
             return;
         }
 
-        String check = new String(ch_input);
+        String check = new String(input);
         if (visited.contains(check)) return;
         else visited.add(check);
 
-        for(int i=0; i<ch_input.length-1; i++){
-            for(int j=i+1; j<ch_input.length; j++){
+        for(int i=0; i<input.length-1; i++){
+            for(int j=i+1; j< input.length; j++){
                 swap(i, j);
-                dfs(win, depth+1);
+                recursion(idx + 1, n);
                 swap(i, j);
             }
         }
     }
 
-    private static void swap(int a, int b) {
-        char tmp = ch_input[a];
-        ch_input[a] = ch_input[b];
-        ch_input[b] = tmp;
+    private static void swap(int i, int j) {
+        char tmp = input[i];
+        input[i] = input[j];
+        input[j] = tmp;
     }
 }
