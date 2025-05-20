@@ -8,34 +8,35 @@ public class Solution {
 
         for(int tc = 1; tc <= 10; tc++) {
             int n = sc.nextInt();
-            int answer;
-            int[][] graph = new int[100][100];
+            int answer = Integer.MIN_VALUE;
+            int[][] array = new int[100][100];
 
             for(int i=0; i<100; i++){
                 for(int j=0; j<100; j++){
-                    graph[i][j] = sc.nextInt();
+                    array[i][j] = sc.nextInt();
                 }
             }
 
-            int cl_sum = 0;
-            int cr_sum = 0;
             for(int i=0; i<100; i++){
-                cl_sum += graph[i][i];
-                cr_sum += graph[i][99-i];
-            }
-            answer = Math.max(cl_sum, cr_sum);
-
-            for(int i=0; i<100; i++){
-                int r_sum = 0;
-                int c_sum = 0;
+                int rSum = 0;
+                int cSum = 0;
                 for(int j=0; j<100; j++){
-                    r_sum += graph[i][j];
-                    c_sum += graph[j][i];
+                    rSum += array[i][j];
                 }
-                answer = Math.max(answer, r_sum);
-                answer = Math.max(answer, c_sum);
+                for(int j=0; j<100; j++){
+                    cSum += array[j][i];
+                }
+                answer = Math.max(answer, Math.max(rSum, cSum));
             }
 
+            int crSum = 0;
+            int clSum = 0;
+            for(int i=0; i<100; i++){
+                crSum += array[i][i];
+                clSum += array[i][99 - i];
+            }
+
+            answer = Math.max(answer, Math.max(crSum, clSum));
             System.out.println("#" + tc + " " + answer);
         }
     }
