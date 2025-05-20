@@ -22,8 +22,6 @@ public class Solution {
                 int cSum = 0;
                 for(int j=0; j<100; j++){
                     rSum += array[i][j];
-                }
-                for(int j=0; j<100; j++){
                     cSum += array[j][i];
                 }
                 answer = Math.max(answer, Math.max(rSum, cSum));
