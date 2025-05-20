@@ -8,36 +8,37 @@ public class Solution {
         for(int tc = 1; tc <= 10; tc++) {
             int T;
             T=sc.nextInt();
-            
-            int[] array = new int[100];
 
+            int[] array = new int[100];
             for(int i=0; i<100; i++){
                 array[i] = sc.nextInt();
             }
 
-            int min;
-            int max;
+            int max = 0;
+            int min = 0;
 
             for(int i=0; i<T; i++){
-                min = Arrays.stream(array).min().getAsInt();
                 max = Arrays.stream(array).max().getAsInt();
+                min = Arrays.stream(array).min().getAsInt();
 
-                int min_idx = -1;
-                int max_idx = -1;
-
+                boolean maxFlag = false;
+                boolean minFlag = false;
                 for(int j=0; j<100; j++){
-                    if (array[j] == min) min_idx = j;
-                    if (array[j] == max) max_idx = j;
-
-                    if (min_idx != -1 && max_idx != -1){
-                        array[min_idx] += 1;
-                        array[max_idx] -= 1;
-                        break;
+                    if (array[j] == max && !maxFlag){
+                        array[j] --;
+                        maxFlag = true;
                     }
+                    if (array[j] == min && !minFlag){
+                        array[j] ++;
+                        minFlag = true;
+                    }
+
+                    if (maxFlag && minFlag) break;
                 }
             }
-            min = Arrays.stream(array).min().getAsInt();
+
             max = Arrays.stream(array).max().getAsInt();
+            min = Arrays.stream(array).min().getAsInt();
             System.out.println("#" + tc + " " + (max - min));
         }
     }
