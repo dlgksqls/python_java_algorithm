@@ -2,7 +2,6 @@ import java.util.*;
 public class Solution {
     static int n;
     static int answer;
-    static char [][] char_array;
     static int [][] array;
 
     public static void main(String args[]) throws Exception {
@@ -11,50 +10,49 @@ public class Solution {
         T=sc.nextInt();
 
         for(int tc = 1; tc <= T; tc++) {
-            int count = 0;
-            int idx = 0;
             n = sc.nextInt();
-            char_array = new char[n][n];
+            char[][] input = new char[n][n];
             array = new int[n][n];
-;
-            answer = 0;
-            int mid = n / 2;
 
             for(int i=0; i<n; i++){
-                char_array[i] = sc.next().toCharArray();
+                input[i] = sc.next().toCharArray();
                 for(int j=0; j<n; j++){
-                    array[i][j] = char_array[i][j] - '0';
+                    array[i][j] = input[i][j] - '0';
                 }
             }
 
+            answer = 0;
+            int mid = array.length / 2;
             for(int i=0; i<n; i++){
-                if (answer == 0){
-                    for(int j=0; j<n; j++){
-                        answer += array[j][mid];
-                    }
-                    idx ++;
-                }
-                else {
-                    int left = mid - idx;
-                    int right = mid + idx;
-                    count += 1;
-
-                    // 왼쪽
-                    cal(left, count);
-                    // 오른쪽
-                    cal(right, count);
-
-                    idx++;
-                }
+                answer += array[i][mid];
             }
+
+            left(mid-1);
+            right(mid+1);
 
             System.out.println("#" + tc + " " + answer);
         }
     }
 
-    private static void cal(int dir, int count) {
-        for(int i=count; i<n-count; i++){
-            answer += array[i][dir];
+    private static void left(int y) {
+        int count = 1;
+        while(y >= 0){
+            for(int i=count; i<n-count; i++){
+                answer += array[i][y];
+            }
+            y --;
+            count++;
+        }
+    }
+
+    private static void right(int y) {
+        int count = 1;
+        while(y < n){
+            for(int i=count; i<n-count; i++) {
+                answer += array[i][y];
+            }
+            y ++;
+            count++;
         }
     }
 }
