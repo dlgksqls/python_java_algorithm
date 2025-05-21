@@ -21,15 +21,23 @@ public class Solution {
             }
 
             char[] answer = new char[n+1];
-            while (!list_a.isEmpty() && !list_b.isEmpty()) {
-                int a = list_a.poll();
-                list_b.removeIf(x -> x == a);
-                answer[a] = 'A';
-
-                if (!list_b.isEmpty()) {
-                    int b = list_b.poll();
-                    list_a.removeIf(x -> x == b);
-                    answer[b] = 'B';
+            int count = 0;
+            while(count < n){
+                while(!list_a.isEmpty()){
+                    int select = list_a.poll();
+                    if (answer[select] == 0){
+                        answer[select] = 'A';
+                        count ++;
+                        break;
+                    }
+                }
+                while (!list_b.isEmpty()){
+                    int select = list_b.poll();
+                    if (answer[select] == 0){
+                        answer[select] = 'B';
+                        count ++;
+                        break;
+                    }
                 }
             }
 
