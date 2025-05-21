@@ -2,55 +2,57 @@ import java.util.*;
 
 public class Solution {
 
-    static int n;
-
+    static boolean flag;
     public static void main(String args[]) throws Exception {
         Scanner sc = new Scanner(System.in);
         int T = sc.nextInt();
 
         for (int tc = 1; tc <= T; tc++) {
-            n = sc.nextInt();
-            char[][] board = new char[n][n];
+            int n = sc.nextInt();
+            char[][] array = new char[n][n];
 
-            for (int i = 0; i < n; i++) {
-                board[i] = sc.next().toCharArray();
+            for(int i=0; i<n; i++){
+                array[i] = sc.next().toCharArray();
             }
 
-            boolean found = false;
+            int[] dx = {0, 1, 1, 1, 0, -1, -1, -1};
+            int[] dy = {1, 1, 0, -1, -1, -1, 0, 1};
 
-            int[] dx = {1, 1, 0, -1, -1, -1, 0, 1};
-            int[] dy = {0, -1, -1, -1, 0, 1, 1, 1};
-
+            flag = false;
             outer:
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (board[i][j] == 'o') {
-                        for (int d = 0; d < 8; d++) {
-                            int count = 1;
-                            int nx = i;
-                            int ny = j;
-
-                            for (int k = 1; k < 5; k++) {
-                                nx += dx[d];
-                                ny += dy[d];
-
-                                if (nx >= 0 && nx < n && ny >= 0 && ny < n && board[nx][ny] == 'o') {
-                                    count++;
-                                } else {
-                                    break;
-                                }
-                            }
-
-                            if (count == 5) {
-                                found = true;
-                                break outer;
-                            }
-                        }
+            for(int i=0; i<n; i++){
+                for(int j=0; j<n; j++){
+                    if (array[i][j] == 'o') {
+                        check(i, j, dx, dy, array, n);
+                        if (flag) break outer;
                     }
                 }
             }
+            System.out.println("#" + tc + " " + ((flag) ? "YES" : "NO"));
+        }
+    }
 
-            System.out.println("#" + tc + " " + (found ? "YES" : "NO"));
+    private static void check(int x, int y, int[] dx, int[] dy, char[][] array, int n) {
+        for(int i=0; i<8; i++){
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            int count = 1;
+            while (nx >= 0 && nx < n && ny >= 0 && ny < n){
+                if (array[nx][ny] == 'o'){
+                    count ++;
+                    nx += dx[i];
+                    ny += dy[i];
+                }
+                else {
+                    flag = false;
+                    break;
+                }
+                if (count == 5){
+                    flag = true;
+                    return;
+                }
+            }
         }
     }
 }
