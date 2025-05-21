@@ -19,14 +19,15 @@ public class Solution {
             int[] dy = {1, 1, 0, -1, -1, -1, 0, 1};
 
             flag = false;
-            outer:
             for(int i=0; i<n; i++){
                 for(int j=0; j<n; j++){
                     if (array[i][j] == 'o') {
                         check(i, j, dx, dy, array, n);
-                        if (flag) break outer;
+                        if (flag) break;
                     }
+                    if (flag) break;
                 }
+                if (flag) break;
             }
             System.out.println("#" + tc + " " + ((flag) ? "YES" : "NO"));
         }
