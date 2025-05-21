@@ -6,28 +6,31 @@ public class Solution {
         Scanner sc = new Scanner(System.in);
 
         for(int tc = 1; tc <= 10; tc++) {
-            int n = sc.nextInt();
+            int T = sc.nextInt();
 
-            ArrayList<Integer> arrayList = new ArrayList<>();
+            Queue<Integer> queue = new LinkedList<>();
             for(int i=0; i<8; i++){
-                arrayList.add(sc.nextInt());
+                queue.add(sc.nextInt());
             }
 
-            int count = 1;
+            int count = 0;
             while(true){
-                if (count > 5) count = 1;
-                int pick = arrayList.get(0) - count;
                 count ++;
-                arrayList.remove(0);
-                if (pick <=  0){
-                    arrayList.add(0);
+                if (count == 6){
+                    count = 1;
+                }
+                int poll = queue.poll() - count;
+                if (poll <= 0) {
+                    queue.add(0);
                     break;
                 }
-                arrayList.add(pick);
+                queue.add(poll);
             }
 
             System.out.print("#" + tc + " ");
-            arrayList.stream().forEach(number -> System.out.print(number + " "));
+            while(!queue.isEmpty()){
+                System.out.print(queue.poll() + " ");
+            }
             System.out.println();
         }
     }
