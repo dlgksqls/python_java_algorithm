@@ -2,11 +2,10 @@ import java.util.*;
 
 public class Solution {
 
-    static int[][] array;
     static int n;
-    static int[] dx = {-1, -1, -1, 0, 0, 1, 1, 1};
-    static int[] dy = {-1, 0, 1, -1, 1, -1, 0, 1};
-
+    static int[][] array;
+    static int[] dx = {1, 1, 0, -1, -1, -1, 0, 1};
+    static int[] dy = {0, -1, -1, -1, 0, 1, 1, 1};
     public static void main(String args[]) throws Exception {
         Scanner sc = new Scanner(System.in);
         int T = sc.nextInt();
@@ -16,17 +15,16 @@ public class Solution {
             int m = sc.nextInt();
 
             array = new int[n+1][n+1];
-
-            int mid = n / 2;
-            array[mid][mid] = 2;
-            array[mid][mid + 1] = 1;
-            array[mid + 1][mid] = 1;
-            array[mid + 1][mid + 1] = 2;
+            array[n/2][n/2] = 2;
+            array[n/2+1][n/2+1] = 2;
+            array[n/2][n/2+1] = 1;
+            array[n/2+1][n/2] = 1;
 
             for(int i=0; i<m; i++){
                 int x = sc.nextInt();
                 int y = sc.nextInt();
                 int color = sc.nextInt();
+
                 check(x, y, color);
             }
 
@@ -45,21 +43,20 @@ public class Solution {
 
     private static void check(int x, int y, int color) {
         array[x][y] = color;
-
         int op = (color == 1) ? 2 : 1;
 
         for(int i=0; i<8; i++){
             int nx = x + dx[i];
             int ny = y + dy[i];
-            List<int[]> change_idx = new ArrayList<>();
 
-            while(nx > 0 && nx < n+1 && ny > 0 && ny < n+1 && array[nx][ny] == op){
+            ArrayList<int[]> change_idx = new ArrayList<>();
+            while(nx >= 1 && nx <= n && ny >= 1 && ny <= n && array[nx][ny] == op){
                 change_idx.add(new int[]{nx, ny});
                 nx += dx[i];
                 ny += dy[i];
             }
 
-            if (nx > 0 && nx < n+1 && ny > 0 && ny < n+1 && array[nx][ny] == color){
+            if (nx >= 1 && nx <= n && ny >= 1 && ny <= n && array[nx][ny] == color){
                 for (int[] changeIdx : change_idx) {
                     array[changeIdx[0]][changeIdx[1]] = color;
                 }
