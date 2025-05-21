@@ -13,7 +13,6 @@ public class Solution {
             int k = sc.nextInt();
 
             int[] array = new int[n];
-
             for(int i=0; i<n; i++){
                 array[i] = sc.nextInt();
             }
@@ -21,33 +20,31 @@ public class Solution {
             Arrays.sort(array);
 
             int bung = 0;
-            int count = 0;
+            int son = 0;
             boolean flag = true;
-            int idx = 0;
+            int time = 0;
 
-            while (count <= array[array.length-1]){
-                if (array[0] == 0) {
+            while(true){
+                if (time != 0 && time % m == 0){
+                    bung += k;
+                }
+                if (time < array[son]) {
+                    time ++;
+                    continue;
+                }
+                else if(bung == 0){
                     flag = false;
                     break;
                 }
-                if (count != 0 && count % m == 0) bung += k;
-                if (array[idx] == count && bung > 0) {
-                    bung--;
-                    idx ++;
-                }
-                else if (array[idx] == count && bung == 0) {
-                    flag = false;
-                    break;
-                }
-                count ++;
+                son ++;
+                bung --;
+                time ++;
+                if (son == array.length) break;
             }
 
-            if (flag){
-                System.out.println("#" + tc + " " + "Possible");
-            }
-            else {
-                System.out.println("#" + tc + " " + "Impossible");
-            }
+            String answer = (flag) ? "Possible" : "Impossible";
+
+            System.out.println("#" + tc + " " + answer);
         }
     }
 }
