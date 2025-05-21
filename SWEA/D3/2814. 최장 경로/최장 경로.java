@@ -1,54 +1,56 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Solution {
-
+    static ArrayList<Integer>[] graph;
+    static int[] dist;
     static int n;
     static int m;
-    static ArrayList<Integer>[] graph;
-    static boolean[] visited;
     static int answer;
-
     public static void main(String args[]) throws Exception {
-        Scanner sc = new Scanner(System.in);
-        int T;
-        T=sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        for(int tc = 1; tc <= T; tc++) {
-            n = sc.nextInt();
-            m = sc.nextInt();
-            answer = 0;
+        int T = Integer.parseInt(br.readLine());
+        for(int tc = 1; tc <= T; tc ++){
+            st = new StringTokenizer(br.readLine());
+            n = Integer.parseInt(st.nextToken());
+            m = Integer.parseInt(st.nextToken());
 
-            visited = new boolean[n+1];
             graph = new ArrayList[n+1];
             for(int i=1; i<=n; i++){
-                graph[i] = new ArrayList();
+                graph[i] = new ArrayList<>();
             }
 
             for(int i=0; i<m; i++){
-                int x = sc.nextInt();
-                int y = sc.nextInt();
-
-                graph[x].add(y);
-                graph[y].add(x);
+                st = new StringTokenizer(br.readLine());
+                int a = Integer.parseInt(st.nextToken());
+                int b = Integer.parseInt(st.nextToken());
+                graph[a].add(b);
+                graph[b].add(a);
             }
 
+            answer = Integer.MIN_VALUE;
             for(int i=1; i<=n; i++){
-                dfs(i, 1);
+                dist = new int[n + 1];
+                dist[i] = 1;
+                dfs(i);
             }
 
             System.out.println("#" + tc + " " + answer);
         }
     }
 
-    private static void dfs(int v, int depth) {
-        visited[v] = true;
-        answer = Math.max(answer, depth);
+    private static void dfs(int v) {
+        answer = Math.max(answer, dist[v]);
 
-        for (Integer i : graph[v]) {
-            if (!visited[i]){
-                dfs(i, depth+1);
+        for(int now : graph[v]){
+            if (dist[now] == 0){
+                dist[now] += dist[v] + 1;
+                dfs(now);
+                dist[now] = 0;
             }
         }
-        visited[v] = false;
     }
 }
