@@ -2,59 +2,58 @@ import java.util.*;
 
 public class Solution {
 
-    static int win;
-    static int lose;
-    static int[] gyu;
-    static int[] inn;
-    static boolean[] visited;
-
+    static int gyu_win;
+    static int inn_win;
+    static boolean[] visited_inn;
     public static void main(String args[]) throws Exception {
         Scanner sc = new Scanner(System.in);
         int T;
-        T=sc.nextInt();
+        T = sc.nextInt();
 
-        for(int tc = 1; tc <= T; tc++) {
-            win = 0;
-            lose = 0;
-            gyu = new int[9];
-            inn = new int[9];
-            visited = new boolean[9];
+        for (int tc = 1; tc <= T; tc++) {
+            int[] gyu = new int[9];
+            int[] inn = new int[9];
+
+            boolean[] visited = new boolean[19];
             for(int i=0; i<9; i++){
                 gyu[i] = sc.nextInt();
+                visited[gyu[i]] = true;
             }
 
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j <= 18; j++) {
-                    final int finalJ = j;
-                    if (!Arrays.stream(gyu).anyMatch(x -> x == finalJ) && !Arrays.stream(inn).anyMatch(x -> x == finalJ)) {
-                        inn[i] = j;
-                        break;
-                    }
+            int idx = 0;
+            for(int i=1; i<=18; i++){
+                if (!visited[i]) {
+                    inn[idx] = i;
+                    idx ++;
                 }
             }
 
-            recursion(0, 0, 0);
+            gyu_win = 0;
+            inn_win = 0;
+            visited_inn = new boolean[9];
+            recursion(0, 0, 0, gyu, inn);
 
-            System.out.println("#" + tc + " " + win + " " + lose);
+            System.out.println("#" + tc + " " + gyu_win + " " + inn_win);
         }
     }
 
-    private static void recursion(int idx, int gyu_score, int inn_score) {
+    private static void recursion(int idx, int gyu_score, int inn_score, int[] gyu, int[] inn) {
         if (idx == 9){
-            if (gyu_score > inn_score) win ++;
-            else if (gyu_score < inn_score) lose ++;
+            if (gyu_score == inn_score) return;
+            if (gyu_score > inn_score) gyu_win ++;
+            else inn_win ++;
             return;
         }
-
-        for(int i=0; i<9; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
+        for(int i=0; i<9; i++){
+            if (!visited_inn[i]){
+                visited_inn[i] = true;
                 if (gyu[idx] > inn[i]) {
-                    recursion(idx + 1, gyu_score + gyu[idx] + inn[i], inn_score);
-                } else {
-                    recursion(idx + 1, gyu_score, inn_score + gyu[idx] + inn[i]);
+                    recursion(idx + 1, gyu_score + gyu[idx] + inn[i], inn_score, gyu, inn);
                 }
-                visited[i] = false;
+                else {
+                    recursion(idx + 1, gyu_score, inn_score + gyu[idx] + inn[i], gyu, inn);
+                }
+                visited_inn[i] = false;
             }
         }
     }
