@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Solution {
@@ -6,19 +8,25 @@ public class Solution {
 
         for (int tc = 1; tc <= 10; tc++) {
             int n = sc.nextInt();
-            String s = sc.next();
-            Stack<Character> stack = new Stack<>();
+            LinkedList<Character> list = new LinkedList<>();
 
-            for (char c : s.toCharArray()) {
-                if (!stack.isEmpty() && stack.peek() == c) {
-                    stack.pop(); // 중복 제거
-                } else {
-                    stack.push(c);
+            for (char c : sc.next().toCharArray()) {
+                list.add(c);
+            }
+
+            int i=0;
+            while(i < list.size()-1){
+                if (list.get(i) != list.get(i+1)) i++;
+                else {
+                    list.remove(i);
+                    list.remove(i);
+                    if (i == 0) continue;
+                    i --;
                 }
             }
 
             System.out.print("#" + tc + " ");
-            for (char c : stack) {
+            for (Character c : list) {
                 System.out.print(c);
             }
             System.out.println();
