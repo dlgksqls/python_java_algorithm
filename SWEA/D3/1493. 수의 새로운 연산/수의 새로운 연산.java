@@ -1,61 +1,53 @@
 import java.util.*;
 
 public class Solution {
-
-    static HashMap<Integer, Node> map = new HashMap<Integer, Node>();
-    static int MAX_VALUE = 300;
-    static int[][] array = new int[MAX_VALUE+1][MAX_VALUE+1];
+    static int[][] array;
     public static void main(String args[]) throws Exception {
         Scanner sc = new Scanner(System.in);
         int T;
-        T=sc.nextInt();
+        T = sc.nextInt();
 
-        init();
-
-        for(int tc = 1; tc <= T; tc++) {
+        for(int tc = 1; tc <= T; tc ++){
             int p = sc.nextInt();
             int q = sc.nextInt();
 
-            Node a = map.get(p);
-            Node b = map.get(q);
+            array = new int[301][301];
+            init();
 
-            int find_y = a.y + b.y;
-            int find_x = a.x + b.x;
-
-            System.out.println("#" + tc + " " + array[find_y][find_x]);
+            int x1 = 0, y1 = 0;
+            int x2 = 0, y2 = 0;
+            for(int i=1; i<=300; i++){
+                for(int j=1; j<=300; j++){
+                    if (array[i][j] == p){
+                        x1 = i;
+                        y1 = j;
+                    }
+                    if (array[i][j] == q){
+                        x2 = i;
+                        y2 = j;
+                    }
+                }
+            }
+            System.out.println("#" + tc + " " + array[x1+x2][y1+y2]);
         }
     }
 
     private static void init() {
-        int k = 1;
+        int count = 1;
         array[1][1] = 1;
-        map.put(1, new Node(1, 1));
-
-        // 세로줄 초기화
-        for(int i=2; i<=MAX_VALUE; i++){
-            array[i][1] = array[i-1][1] + k;
-            map.put(array[i][1], new Node(1, i));
-            k++;
+        for(int i=2; i<=300; i++){
+            array[i][1] = array[i-1][1] + count;
+            count ++;
         }
 
-        // 가로줄 초기화
-        k = 1;
-        for(int i=1; i<=MAX_VALUE; i++){
-            for(int j=2; j<=MAX_VALUE; j++){
-                array[i][j] = array[i][j-1] + (j + k - 1);
-                map.put(array[i][j], new Node(j, i));
+        count = 2;
+        for(int i=1; i<=300; i++){
+            int up = count;
+            for(int j=2; j<=300; j++){
+                array[i][j] = array[i][j-1] + up;
+                up ++;
             }
-            k ++; // y축 업데이트
-        }
-    }
-
-    private static class Node {
-        int x;
-        int y;
-
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
+            count ++;
         }
     }
 }
