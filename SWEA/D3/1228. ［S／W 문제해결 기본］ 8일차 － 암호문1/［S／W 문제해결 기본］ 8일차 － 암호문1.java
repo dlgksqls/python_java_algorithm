@@ -1,39 +1,41 @@
+import java.io.*;
 import java.util.*;
 
 public class Solution {
 
     public static void main(String args[]) throws Exception {
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
         for(int tc = 1; tc <= 10; tc++) {
-            int n = sc.nextInt();
-            sc.nextLine();
-            String pwd = sc.nextLine();
-            String[] pwdArray = pwd.split(" ");
-            List<String> pwdList = new ArrayList<>(Arrays.asList(pwdArray));
+            int n = Integer.parseInt(br.readLine());
+            LinkedList<String> input = new LinkedList<>();
+            st = new StringTokenizer(br.readLine());
+            for(int i=0; i<n; i++){
+                input.add(st.nextToken());
+            }
 
-            int m = sc.nextInt();
-            sc.nextLine();
-            String cmd = sc.nextLine();
-            String[] array = cmd.split("I ");
+            n = Integer.parseInt(br.readLine());
+            String[] order = br.readLine().split("I");
 
-            for (String current : array) {
-                if (current.trim().isEmpty()) continue;
+            for (String s : order) {
+                if (s.equals("")) continue;
 
-                String[] split = current.split(" ");
-                int x = Integer.parseInt(split[0]);
-                int y = Integer.parseInt(split[1]);
+                String[] split = s.split(" ");
+                int end = Integer.parseInt(split[1]);
+                int length = Integer.parseInt(split[2]);
 
-                List<String> toInsert = new ArrayList<>();
-                for(int i = 0; i < y; i++) {
-                    toInsert.add(split[i+2]);
+                ArrayList<String> str = new ArrayList<>();
+                for(int i=0; i<length; i++){
+                    str.add(split[i+3]);
                 }
-                pwdList.addAll(x, toInsert);
+
+                input.addAll(end, str);
             }
 
             System.out.print("#" + tc + " ");
             for(int i=0; i<10; i++){
-                System.out.print(pwdList.get(i) + " ");
+                System.out.print(input.get(i) + " ");
             }
             System.out.println();
         }
