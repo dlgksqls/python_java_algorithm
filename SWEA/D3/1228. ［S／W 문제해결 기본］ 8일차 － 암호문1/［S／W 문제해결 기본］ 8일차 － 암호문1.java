@@ -16,21 +16,17 @@ public class Solution {
             }
 
             n = Integer.parseInt(br.readLine());
-            String[] order = br.readLine().split("I");
+            String[] order = br.readLine().split(" ");
 
-            for (String s : order) {
-                if (s.equals("")) continue;
+            for (int i = 0; i < order.length; i++) {
+                if (order[i].equals("I")) {
+                    int end = Integer.parseInt(order[++i]);
+                    int cnt = Integer.parseInt(order[++i]);
 
-                String[] split = s.split(" ");
-                int end = Integer.parseInt(split[1]);
-                int length = Integer.parseInt(split[2]);
-
-                ArrayList<String> str = new ArrayList<>();
-                for(int i=0; i<length; i++){
-                    str.add(split[i+3]);
+                    for (int j = 0; j < cnt; j++) {
+                        input.add(end++, order[++i]);
+                    }
                 }
-
-                input.addAll(end, str);
             }
 
             System.out.print("#" + tc + " ");
