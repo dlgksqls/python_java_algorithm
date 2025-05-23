@@ -32,31 +32,30 @@ import java.io.*;
    사용하는 클래스명이 Solution 이어야 하므로, 가급적 Solution.java 를 사용할 것을 권장합니다.
    이러한 상황에서도 동일하게 java Solution 명령으로 프로그램을 수행해볼 수 있습니다.
  */
-class Solution
-{
+class Solution{
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt();
+            Scanner sc = new Scanner(System.in);
+            int T = sc.nextInt();
 
-        for (int tc = 1; tc <= T; tc++) {
-            int n = sc.nextInt();
-            int count = 1;
-            int[] array = new int[101];
+            for (int tc = 1; tc <= T; tc++) {
+                int n = sc.nextInt();
+                int count = 1;
+                int[] array = new int[101];
 
-            for(int i=0; i<1000; i++){
-                array[sc.nextInt()] ++;
-            }
-
-            int max = 0;
-            int max_score = 0;
-            for(int i=0; i<100; i++){
-                if (max <= array[i]) {
-                    max = array[i];
-                    max_score = i;
+                for(int i=0; i<1000; i++){
+                    array[sc.nextInt()]++;
                 }
+			
+                int max_score = 0;
+                int max = Integer.MIN_VALUE;
+                for(int i=0; i<array.length; i++){
+                    if (max <= array[i]){
+                        max_score = i;
+                        max = array[i];
+                }               
             }
-            System.out.println("#"+tc+" "+max_score);
+                System.out.println("#"+tc+" "+max_score);
         }
-        sc.close();
-    }
+                    sc.close();
+}
 }
