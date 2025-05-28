@@ -1,57 +1,53 @@
 class Solution {
     public boolean solution(int[][] key, int[][] lock) {
-        boolean answer = false;
+        int[][] newLock = new int[lock.length * 3][lock.length * 3];
         int n = lock.length;
         int m = key.length;
-        int[][] newLock = new int[n * 3][n * 3];
         
-        for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                newLock[i + n][j + n] = lock[i][j]; 
+        for(int i = 0; i < n; i ++){
+            for(int j = 0; j < n; j++){
+                newLock[i + n][j + n] = lock[i][j];
             }
         }
         
-        for(int rotate=0; rotate<4; rotate++){
+        for(int rotate = 0; rotate < 4; rotate++){
             key = rotate(key);
-            
-            for(int x=0; x<n*2; x++){
-                for(int y=0; y<n*2; y++){
-                    for(int i=0; i<m; i++){
-                        for(int j=0; j<m; j++){
-                            newLock[x+i][y+j] += key[i][j];
+            for(int i = 0; i < n * 2; i++){
+                for(int j = 0; j < n * 2; j++){
+                    for(int k = 0; k < m; k ++){
+                        for(int l = 0; l < m; l++){
+                            newLock[i + k][j + l] += key[k][l];
                         }
                     }
-                    if (check(newLock, n)){
-                        return true;
-                    }
-                    for(int i=0; i<m; i++){
-                        for(int j=0; j<m; j++){
-                            newLock[x+i][y+j] -= key[i][j];
+                    if (check(newLock, n)) return true;
+                    for(int k = 0; k < m; k++){
+                        for(int l = 0; l < m; l++){
+                            newLock[i + k][j + l] -= key[k][l];
                         }
                     }
                 }
             }
         }
-        return answer;
+        return false;
     }
     
-    boolean check(int[][] array, int n){
-    for (int i = n; i < n * 2; i++) {
-        for (int j = n; j < n * 2; j++) {
-            if (array[i][j] != 1) return false;
-        }
-    }
-    return true;
-}
-
-    
-    int[][] rotate(int[][] key){
-        int[][] tmp = new int[key.length][key[0].length];
-        for(int i=0; i<key.length; i++){
-            for(int j=0; j<key[0].length; j++){
-                tmp[j][key.length - 1 - i] = key[i][j]; 
+    boolean check(int[][] newLock, int n){
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if (newLock[i + n][j + n] != 1) return false;
             }
         }
-        return tmp;
+        return true;
+    }
+    
+    int[][] rotate(int[][] key){
+        int[][] temp = new int[key.length][key[0].length];
+        for(int i=0; i<key.length; i++){
+            for(int j=0; j<key.length; j++){
+                temp[j][key.length-1-i] = key[i][j];
+            }
+        }
+        
+        return temp;
     }
 }
