@@ -2,33 +2,39 @@ class Solution {
     public int solution(String s) {
         int answer = s.length();
         
-        for(int i=1; i<s.length()/2 + 1; i++){
-            String str = "";
-            String prev = s.substring(0, i);
+        for(int check = 1; check <= s.length()/2; check ++){
+            String tmp = "";
+            String str = s.substring(0, check);
             int count = 1;
-            
-            for(int j=i; j<s.length(); j+=i){
+            for(int i = check; i < s.length(); i += check){
                 String sub = "";
-                for(int k=j; k<i+j; k++){
-                    if (k < s.length()) sub += s.charAt(k);
-                }
-                if (prev.equals(sub)) count ++;
-                else{
-                    if (count >= 2) str += count + prev;
-                    else str += prev;
-                    
-                    sub = "";
-                    for (int k = j; k < j + i; k++) {
-                        if (k < s.length()) sub += s.charAt(k);
+                for(int j = i; j < i + check; j ++){
+                    if (j < s.length()){
+                        sub += s.charAt(j);
                     }
-                    prev = sub;
+                }
+                if (str.equals(sub)) {
+                    count ++;
+                    continue;
+                }
+                else{
+                    if (count >= 2){
+                    tmp += count + str;
+                    }
+                    else{
+                        tmp += str;
+                    }
+                    str = sub;
                     count = 1;
                 }
             }
-            if (count >= 2) str += count + prev;
-            else str += prev;
-            
-            answer = Math.min(answer, str.length());
+            if (count >= 2){
+                tmp += count + str;
+            }
+            else{
+                tmp += str;
+            }
+            answer = Math.min(answer, tmp.length());
         }
         return answer;
     }
