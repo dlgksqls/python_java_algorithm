@@ -4,15 +4,15 @@
 
 ### 성능 요약
 
-메모리: 53648 KB, 시간: 136 ms
+메모리: 42236 KB, 시간: 520 ms
 
 ### 분류
 
-그리디 알고리즘, 수학, 정렬
+수학, 그리디 알고리즘, 정렬
 
 ### 제출 일자
 
-2024년 3월 6일 22:03:02
+2025년 6월 2일 13:08:08
 
 ### 문제 설명
 
@@ -22,7 +22,7 @@
 
 <p>예를 들어 <em>N</em>=4이고, 각 위치가 1, 5, 7, 9일 때를 가정하자.</p>
 
-<p style="text-align: center;"><img alt="" src="" style="height: 113px; width: 600px;"></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/4da9d177-d4d8-4cf7-9f91-a75d5a6ec5e6/-/preview/" style="height: 113px; width: 600px;"></p>
 
 <p>이 경우 5의 위치에 설치했을 때, 안테나로부터 모든 집까지의 거리의 총 합이 (4+0+2+4)=10으로, 최소가 된다.</p>
 
