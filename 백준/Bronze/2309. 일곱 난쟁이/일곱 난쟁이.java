@@ -1,55 +1,56 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Main {
+    static ArrayList<Integer> arrayList;
+    static int[] result;
+    static boolean flag = false;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int[] array = new int[9];
+        arrayList = new ArrayList<>();
         for(int i=0; i<9; i++){
             array[i] = Integer.parseInt(br.readLine());
         }
 
-        Arrays.sort(array);
+        result = new int[7];
+        recursion(0, array);
 
-        for(int a=0; a<=2; a++){
-            int idx = 0;
+        Arrays.sort(result);
+
+        for (int i : result) {
+            System.out.println(i);
+        }
+
+        br.close();
+    }
+
+    private static void recursion(int idx, int[] array) {
+        if (flag) return;
+        if (arrayList.size() == 7){
             int sum = 0;
-            int[] answer = new int[7];
-            answer[idx++] = array[a];
-            for(int b=a+1; b<=3; b++){
-                answer[idx++] = array[b];
-                for(int c=b+1; c<=4; c++){
-                    answer[idx++] = array[c];
-                    for(int d=c+1; d<=5; d++){
-                        answer[idx++] = array[d];
-                        for(int e=d+1; e<=6; e++){
-                            answer[idx++] = array[e];
-                            for(int f=e+1; f<=7; f++){
-                                answer[idx++] = array[f];
-                                for(int g=f+1; g<=8; g++){
-                                    answer[idx++] = array[g];
-                                    sum = array[a] + array[b] + array[c] + array[d] + array[e] + array[f] + array[g];
-                                    if (sum == 100) {
-                                        for (int i : answer) {
-                                            System.out.println(i);
-                                        }
-                                        return;
-                                    }
-                                    idx --;
-                                }
-                                idx --;
-                            }
-                            idx --;
-                        }
-                        idx --;
-                    }
-                    idx --;
-                }
-                idx --;
+            for (Integer i : arrayList) {
+                sum += i;
             }
+
+            if (sum == 100){
+                for(int i=0; i<7; i++){
+                    result[i] = arrayList.get(i);
+                }
+                flag =  true;
+                return;
+            }
+        }
+
+        for(int i=idx; i<array.length; i++) {
+            arrayList.add(array[i]);
+            recursion(i + 1, array);
+            arrayList.remove(arrayList.size() - 1);
         }
     }
 }
