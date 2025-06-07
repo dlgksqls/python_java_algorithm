@@ -28,7 +28,7 @@ public class Main {
             return;
         }
 
-        for(int size=2; size<=n; size ++){
+        for(int size=2; size<=min; size ++){
             int find = check(size, array);
             if (max_sum < find) {
                 max_sum = find;
