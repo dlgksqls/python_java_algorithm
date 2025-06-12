@@ -10,14 +10,8 @@ class Solution {
         
         while(true){
             if (walletRow < billRow || walletCol < billCol){
-                if (billRow >= billCol){
-                    if (billRow % 2 >= 5) billRow /= 2 - 1;
-                    else billRow /= 2;
-                }
-                else {
-                    if (billCol % 2 >= 5) billCol /= 2 - 1;
-                    else billCol /= 2;
-                }
+                if (billRow >= billCol) billRow /= 2;
+                else billCol /= 2;
                 answer ++;
             }
         
