@@ -1,67 +1,56 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
 public class Main {
-    static int graph[][];
-    static int t, m, n, k;
-    static Queue<int[]> queue;
-    static int dx[] = {-1, 0, 1, 0};
-    static int dy[] = {0, 1, 0, -1};
-
-    public static void bfs(int x, int y){
-        queue = new LinkedList<>();
-
-        queue.offer(new int[] {x, y});
-
-        graph[x][y] = 0;
-
-        while (!queue.isEmpty()) {
-            int poll[] = queue.poll();
-            for (int i = 0; i < 4; i++) {
-                int nx = dx[i] + poll[0];
-                int ny = dy[i] + poll[1];
-
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
-                    if (graph[nx][ny] == 1) {
-                        queue.offer(new int[] {nx, ny});
-                        graph[nx][ny] = 0;
-                    }
-                }
-            }
-        }
-    }
-    public static void main(String[] args) throws Exception{
+    static int[] dx = {0, 1, 0, -1};
+    static int[] dy = {1, 0, -1, 0};
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int T = Integer.parseInt(br.readLine());
 
-        t = Integer.parseInt(br.readLine());
-
-        for (int i=0; i<t; i++){
-            int answer = 0;
+        for(int tc=0; tc<T; tc++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            m = Integer.parseInt(st.nextToken());
-            n = Integer.parseInt(st.nextToken());
-            k = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
+            int n = Integer.parseInt(st.nextToken());
+            int k = Integer.parseInt(st.nextToken());
 
-            graph = new int[n][m];
-
-            for (int j=0; j<k; j++){
+            int[][] array = new int[n][m];
+            for(int i=0; i<k; i++){
                 st = new StringTokenizer(br.readLine());
                 int x = Integer.parseInt(st.nextToken());
                 int y = Integer.parseInt(st.nextToken());
-                graph[y][x] = 1;
+                array[y][x] = 1;
             }
 
-            for (int j=0; j<n; j++){
-                for (int k=0; k<m; k++){
-                    if (graph[j][k] == 1){
+            Queue<int[]> queue = new LinkedList<>();
+            int answer = 0;
+            for(int i=0; i<n; i++){
+                for(int j=0; j<m; j++){
+                    if (array[i][j] == 1) {
                         answer ++;
-                        bfs(j, k);
+                        queue.add(new int[]{i, j});
+                        while (!queue.isEmpty()) {
+                            int[] poll = queue.poll();
+                            for(int move=0; move<4; move++){
+                                int nx = poll[0] + dx[move];
+                                int ny = poll[1] + dy[move];
+
+                                if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
+                                    if (array[nx][ny] == 1){
+                                        array[nx][ny] = 0;
+                                        queue.add(new int[]{nx, ny});
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
             System.out.println(answer);
         }
-        br.close();
-        bw.close();
     }
 }
