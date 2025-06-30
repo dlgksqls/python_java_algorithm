@@ -48,7 +48,7 @@ public class Main {
 //                }
 //            }
 
-            if (map.get(findNum) == null) sb.append(0 + " ");
+            if (!map.containsKey(findNum)) sb.append(0 + " ");
             else sb.append(map.get(findNum) + " ");
         }
 
