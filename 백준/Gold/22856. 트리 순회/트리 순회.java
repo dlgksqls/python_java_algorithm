@@ -62,7 +62,6 @@ public class Main {
         if (current == last) return depth;
 
         int left = findDepth(tree[current].left, depth + 1);
-        if (left != -1) return left;
         return findDepth(tree[current].right, depth + 1);
     }
 }
