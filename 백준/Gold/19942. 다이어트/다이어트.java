@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    static class ingre{
+    static class InGre{
         int dan;
         int ji;
         int tan;
         int bi;
         int price;
 
-        public ingre(int dan, int ji, int tan, int bi, int price) {
+        public InGre(int dan, int ji, int tan, int bi, int price) {
             this.dan = dan;
             this.ji = ji;
             this.tan = tan;
@@ -22,42 +21,25 @@ public class Main {
             this.price = price;
         }
     }
-
     static int n;
-    static int mp, mf, ms, mv;
+    static InGre[] ingres;
+    static List<Integer> best;
+    static List<Integer> list;
+//    static boolean[] visited;
     static int answer = Integer.MAX_VALUE;
-    static List<ingre> array = new ArrayList<>();
-    static List<Integer> answer_used = new ArrayList<>();
-    static List<Integer> used = new ArrayList<>();
-
-    private static void recursion(int idx, int d, int j, int t, int b, int p) {
-
-        if (d >= mp && j >= mf && t >= ms && b >= mv){
-            if (answer > p) {
-                answer = Math.min(answer, p);
-                answer_used = new ArrayList<>();
-                for (Integer i : used) {
-                    answer_used.add(i);
-                }
-            }
-        }
-
-        if (idx == n) {
-            return;
-        }
-
-        used.add(idx+1);
-        recursion(idx + 1, d + array.get(idx).dan, j + array.get(idx).ji,
-                t + array.get(idx).tan, b + array.get(idx).bi, p + array.get(idx).price);
-        used.remove(used.size()-1);
-
-        recursion(idx + 1, d, j, t, b, p);
-    }
+    static int mp;
+    static int mf;
+    static int ms;
+    static int mv;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
+        StringTokenizer st;
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(br.readLine());
+        ingres = new InGre[n];
+//        visited = new boolean[n];
+
+        st = new StringTokenizer(br.readLine());
         mp = Integer.parseInt(st.nextToken());
         mf = Integer.parseInt(st.nextToken());
         ms = Integer.parseInt(st.nextToken());
@@ -65,19 +47,50 @@ public class Main {
 
         for(int i=0; i<n; i++){
             st = new StringTokenizer(br.readLine());
-            array.add(new ingre(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())
-            , Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
+            ingres[i] = new InGre(
+                    Integer.parseInt(st.nextToken()),
+                    Integer.parseInt(st.nextToken()),
+                    Integer.parseInt(st.nextToken()),
+                    Integer.parseInt(st.nextToken()),
+                    Integer.parseInt(st.nextToken())
+            );
         }
 
+        best = new ArrayList<>();
+        list = new ArrayList<>();
         recursion(0, 0, 0, 0, 0, 0);
 
-        if (!answer_used.isEmpty()) {
+        if (!best.isEmpty()){
             System.out.println(answer);
-            for (Integer i : answer_used) {
+            for (Integer i : best) {
                 System.out.print(i + " ");
             }
         }
         else System.out.println(-1);
         br.close();
+    }
+
+    private static void recursion(int idx, int sum, int p, int f, int s, int v) {
+        if (p >= mp && f >= mf && s >= ms && v >= mv){
+            if (answer > sum){
+                answer = sum;
+                best = new ArrayList<>(list);
+            }
+        }
+
+        if (idx == n){
+            return;
+        }
+
+        list.add(idx+1);
+        recursion(idx + 1,
+                sum + ingres[idx].price,
+                p + ingres[idx].dan,
+                f + ingres[idx].ji,
+                s + ingres[idx].tan,
+                v + ingres[idx].bi);
+        list.remove(list.size()-1);
+
+        recursion(idx + 1, sum, p, f, s, v);
     }
 }
