@@ -12,6 +12,7 @@ public class Main {
     static int[] dx = {0, 1, 0, -1};
     static int[] dy = {1, 0, -1, 0};
     static boolean isGram = false;
+    static int gramDist;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -38,20 +39,13 @@ public class Main {
         }
         dist[1][1] = 0;
 
-        int no_gram = bfs(1, 1, 0);
-
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= M; j++) {
-                dist[i][j] = Integer.MAX_VALUE;
-            }
-        }
+        int no_gram = bfs(1, 1);
 
         dist[1][1] = 0;
-        int gram_dist = bfs(1, 1, 1);
         int gram = Integer.MAX_VALUE;
 
         if (isGram) {
-            gram = gram_dist + (N - gram_x) + (M - gram_y);
+            gram = gramDist + (N - gram_x) + (M - gram_y);
         }
 
         int answer = Math.min(gram, no_gram);
@@ -60,7 +54,7 @@ public class Main {
         br.close();
     }
 
-    private static int bfs(int x, int y, int findGram) {
+    private static int bfs(int x, int y) {
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{x, y});
 
@@ -70,9 +64,9 @@ public class Main {
             int now_y = now[1];
 
             if (now_x == N && now_y == M) return dist[N][M];
-            if (findGram == 1 && array[now_x][now_y] == 2) {
+            if (array[now_x][now_y] == 2) {
                 isGram = true;
-                return dist[now_x][now_y];
+                gramDist = dist[now_x][now_y];
             }
 
             for (int i = 0; i < 4; i++) {
