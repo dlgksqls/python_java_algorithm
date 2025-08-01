@@ -9,6 +9,7 @@ public class Main {
     static int n;
     static List<int[]>[] array;
     static boolean[] visited;
+    static int farNode = 0;
     static int answer = Integer.MIN_VALUE;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -31,10 +32,11 @@ public class Main {
             array[b].add(new int[]{a, w});
         }
 
-        for(int i=1; i<=n ;i++){
-            visited = new boolean[n+1];
-            dfs(i, 0);
-        }
+        visited = new boolean[n+1];
+        dfs(1, 0);
+
+        visited = new boolean[n+1];
+        dfs(farNode, 0);
 
         System.out.println(answer);
 
@@ -42,7 +44,10 @@ public class Main {
     }
 
     private static void dfs(int i, int sum) {
-        answer = Math.max(answer, sum);
+        if (answer < sum){
+            farNode = i;
+            answer = sum;
+        }
 
         if (!visited[i]){
             visited[i] = true;
