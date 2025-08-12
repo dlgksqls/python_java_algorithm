@@ -1,70 +1,66 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int n;
-    static int m;
-    static char[][] graph;
+    static int col;
+    static int row;
+    static char[][] array;
     static boolean[][] visited;
     static int[][] dist;
-    static int answer = 0;
-    static int[] dx = {1, 0, -1, 0};
-    static int[] dy = {0, -1, 0, 1};
-    public static void main(String[] args) throws IOException {
+    static int[] dx = {0, 1, 0, -1};
+    static int[] dy = {1, 0, -1, 0};
+    static int answer = Integer.MIN_VALUE;
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
 
-        graph = new char[n][m];
-        for(int i=0; i<n; i++){
-            graph[i] = br.readLine().toCharArray();
+        col = Integer.parseInt(st.nextToken());
+        row = Integer.parseInt(st.nextToken());
+
+        array = new char[col][row];
+        for(int i=0; i<col; i++){
+            array[i] = br.readLine().toCharArray();
         }
 
-        for(int i=0; i<n; i++){
-            for (int j=0; j<m; j++){
-                if (graph[i][j] == 'L'){
-                    visited = new boolean[n][m];
-                    dist = new int[n][m];
-
-                    // BFS
-                    BFS(i, j);
-                }
+        for(int i=0; i<col; i++){
+            for(int j=0; j<row; j++){
+                if (array[i][j] == 'W') continue;
+                visited = new boolean[col][row];
+                dist = new int[col][row];
+                bfs(i, j);
             }
         }
+
         System.out.println(answer);
         br.close();
     }
 
-    private static void BFS(int i, int j) {
+    private static void bfs(int x, int y) {
         Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{i, j});
-        visited[i][j] = true;
+        queue.add(new int[]{x, y, 0});
+        visited[x][y] = true;
 
-        while (!queue.isEmpty()){
+        while(!queue.isEmpty()){
             int[] poll = queue.poll();
-            int x = poll[0];
-            int y = poll[1];
+            int nowX = poll[0];
+            int nowY = poll[1];
+            int nowDist = poll[2];
+            answer = Math.max(answer, nowDist);
 
-            for(int k = 0; k<4; k++){
-                int nx = x + dx[k];
-                int ny = y + dy[k];
+            for(int dir=0; dir<4; dir++){
+                int nx = nowX + dx[dir];
+                int ny = nowY + dy[dir];
 
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m){
-                    if (graph[nx][ny] == 'L') {
-                        if (!visited[nx][ny]) {
-                            queue.offer(new int[]{nx, ny});
-                            visited[nx][ny] = true;
-                            dist[nx][ny] = dist[x][y] + 1;
-                            answer = Math.max(answer, dist[nx][ny]);
-                        }
-                    }
-                }
+                if (nx < 0 || nx >= col || ny < 0 || ny >= row) continue;
+                if (array[nx][ny] == 'W') continue;
+                if (visited[nx][ny]) continue;
+
+                queue.add(new int[]{nx, ny, nowDist + 1});
+                visited[nx][ny] = true;
+                dist[nx][ny] = nowDist + 1;
             }
         }
     }
